@@ -1,5 +1,5 @@
 # scd30
 
-Compile: `gcc scd30.c`
+Compile: `gcc main.c -o scd30`
 
 Run: `./scd30`
