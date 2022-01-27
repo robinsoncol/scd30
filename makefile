@@ -1,4 +1,3 @@
-
 build:
 	gcc main.c -o scd30
 
@@ -7,3 +6,6 @@ clean:
 
 run:
 	./scd30
+
+all: build run
+
