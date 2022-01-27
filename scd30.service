@@ -1,0 +1,17 @@
+[Unit]
+Description="Output CO2 Temp and Humidity"
+
+[Install]
+WantedBy=multi-user.target
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/evanstrauss/scd30/scd30
+WorkingDirectory=/home/evanstrauss/scd30
+Restart=always
+RestartSec=5
+#StandardOutput=syslog
+#StandardError=syslog
+#SyslogIdentifier=%n
+
