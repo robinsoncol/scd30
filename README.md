@@ -1,4 +1,4 @@
-# scd30
+# SCD30
 
 ### Instructions
 
