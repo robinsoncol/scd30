@@ -221,19 +221,19 @@ int main() {
 	//}
 
 	while (true) {
-		// FILE *fp = fopen("data.txt", "a");
+		FILE *fp = fopen("data.txt", "a");
 
-		// if(fp == NULL) {
-		// 	printf("File can't be opened\n");
-		// 	exit(1);
-		// }
+		if(fp == NULL) {
+			printf("File can't be opened\n");
+			exit(1);
+		}
 
 		if (isMeasurementDataAvailable(fd)) {
 			struct Measurements *measurements = NULL;
 			if (readMeasurements(fd, &measurements)) {
-				printf(
-				// fprintf(
-				// 	fp,
+				// printf(
+				fprintf(
+					fp,
 					"CO2: %.2fppm   Temp: %.2fC   Humidity: %.2frH\n",
 					measurements->CO2,
 					measurements->temperature,
@@ -242,8 +242,8 @@ int main() {
 			}
 		}
 
-		// fclose(fp);
+		fclose(fp);
 
-		// delay(5000);
+		delay(5000);
 	}
 }
