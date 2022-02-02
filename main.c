@@ -12,6 +12,10 @@
 
 #define DANGEROUSLY_ALLOW_CHANGING_CO2_REFERENCE false
 
+float convertCtoF(float celcius) {
+	return celcius*1.8+32;
+}
+
 int delay(long ms) {
 	if (ms < 0) {
 		errno = EINVAL;
@@ -220,29 +224,29 @@ int main() {
 	//	printf("CO2 calibration reference: N/A\n");
 	//}
 
-	while (true) {
-		FILE *fp = fopen("data.txt", "a");
+	while (true) {                                                        // output to data.txt
+		FILE *fp = fopen("data.txt", "a");                             // output to data.txt
 
-		if(fp == NULL) {
-			printf("File can't be opened\n");
-			exit(1);
-		}
+		if(fp == NULL) {                                               // output to data.txt
+			printf("File can't be opened\n");                             // output to data.txt
+			exit(1);                                                      // output to data.txt
+		}                                                              // output to data.txt
 
 		if (isMeasurementDataAvailable(fd)) {
 			struct Measurements *measurements = NULL;
 			if (readMeasurements(fd, &measurements)) {
-				// printf(
-				fprintf(
-					fp,
-					"CO2: %.2fppm   Temp: %.2fC   Humidity: %.2frH\n",
+				// printf(                                                   // output to commandline
+				fprintf(                                               // output to data.txt
+					fp,                                                   // output to data.txt
+					"CO2: %.2fppm   Temp: %.2fF   Humidity: %.2frH\n",
 					measurements->CO2,
-					measurements->temperature,
+					convertCtoF(measurements->temperature) - 2,
 					measurements->relativeHumidity
 				);
 			}
 		}
 
-		fclose(fp);
+		fclose(fp);                                                    // output to data.txt
 
 		delay(5000);
 	}
