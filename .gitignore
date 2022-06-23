@@ -53,3 +53,6 @@ dkms.conf
 
 scd30
 data.txt
+CO2.txt
+humidity.txt
+temp.txt
