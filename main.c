@@ -224,29 +224,84 @@ int main() {
 	//	printf("CO2 calibration reference: N/A\n");
 	//}
 
-	while (true) {                                                        // output to data.txt
-		FILE *fp = fopen("data.txt", "a");                             // output to data.txt
+	// while (true) {                                                   
+	// 	FILE *fp = fopen("data.txt", "a");                           
 
-		if(fp == NULL) {                                               // output to data.txt
-			printf("File can't be opened\n");                             // output to data.txt
-			exit(1);                                                      // output to data.txt
-		}                                                              // output to data.txt
+	// 	if(fp == NULL) {                                             
+	// 		printf("File can't be opened\n");                        
+	// 		exit(1);                                                 
+	// 	}                                                            
+
+	// 	if (isMeasurementDataAvailable(fd)) {
+	// 		struct Measurements *measurements = NULL;
+	// 		if (readMeasurements(fd, &measurements)) {
+	// 			// printf(                                                // output to commandline
+	// 			fprintf(                                             
+	// 				fp,                                              
+	// 				"CO2: %.2fppm   Temp: %.2fF   Humidity: %.2frH\n",
+	// 				measurements->CO2,
+	// 				convertCtoF(measurements->temperature) - 2,
+	// 				measurements->relativeHumidity
+	// 			);
+	// 		}
+	// 	}
+
+	// 	fclose(fp);                                                  
+
+	// CO2
+
+	while (true) {
+		FILE *fp_1 = fopen("CO2.txt", "w");                           
+		if(fp_1 == NULL) {                                             
+			printf("File can't be opened\n");                        
+			exit(1);                                                 
+		}                                                            
+
+		FILE *fp_2 = fopen("humidity.txt", "w");                           
+		if(fp_2 == NULL) {                                             
+			printf("File can't be opened\n");                        
+			exit(1);                                                 
+		}
+
+		FILE *fp_3 = fopen("temp.txt", "w");                           
+		if(fp_3 == NULL) {                                             
+			printf("File can't be opened\n");                        
+			exit(1);                                                 
+		}
 
 		if (isMeasurementDataAvailable(fd)) {
 			struct Measurements *measurements = NULL;
 			if (readMeasurements(fd, &measurements)) {
-				// printf(                                                   // output to commandline
-				fprintf(                                               // output to data.txt
-					fp,                                                   // output to data.txt
+
+				printf(                                           
 					"CO2: %.2fppm   Temp: %.2fF   Humidity: %.2frH\n",
 					measurements->CO2,
 					convertCtoF(measurements->temperature) - 2,
 					measurements->relativeHumidity
 				);
+
+				fprintf(                                             
+					fp_1,                                              
+					"CO2: %.2f ppm\n",
+					measurements->CO2
+				);
+				fprintf(                                             
+					fp_2,                                              
+					"Humidity: %.2frH\n",
+					measurements->relativeHumidity
+				);
+				fprintf(                                             
+					fp_3,                                              
+					"Temp: %.2fF",
+					convertCtoF(measurements->temperature) - 2
+				);
+				
 			}
 		}
 
-		fclose(fp);                                                    // output to data.txt
+		fclose(fp_1);                                                  
+		fclose(fp_2);
+		fclose(fp_3);
 
 		delay(5000);
 	}
