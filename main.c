@@ -282,17 +282,20 @@ int main() {
 
 				fprintf(                                             
 					fp_1,                                              
-					"CO2: %.2f ppm\n",
+					// "CO2: %.2f ppm",
+					"%.2f",
 					measurements->CO2
 				);
 				fprintf(                                             
 					fp_2,                                              
-					"Humidity: %.2frH\n",
+					// "Humidity: %.2frH",
+					"%.2f",
 					measurements->relativeHumidity
 				);
 				fprintf(                                             
 					fp_3,                                              
-					"Temp: %.2fF",
+					// "Temp: %.2fF",
+					"%.2f",
 					convertCtoF(measurements->temperature) - 2
 				);
 				
