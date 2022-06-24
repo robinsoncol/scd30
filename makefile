@@ -2,7 +2,7 @@ build:
 	gcc main.c -o scd30
 
 clean:
-	rm -f scd30 data.txt
+	rm -f scd30 data.txt CO2.txt humidity.txt temp.txt
 
 run:
 	./scd30
@@ -14,4 +14,3 @@ run:
 	# systemctl enable scd30.service
 
 all: build run
-
