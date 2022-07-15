@@ -203,6 +203,11 @@ int initSCD30() {
 	return i2cFileDescriptor;
 }
 
+void printError(int errorNumber) {
+	if (errorNumber < 0) {
+		printf("errno=%d, err_msg=\"%s\"\n", errorNumber, strerror(errorNumber));
+	}
+}
 
 /////
 
@@ -269,6 +274,8 @@ int main() {
 			exit(1);
 		}
 
+		printf("%d\n", isMeasurementDataAvailable(fd));
+
 		if (isMeasurementDataAvailable(fd)) {
 			struct Measurements *measurements = NULL;
 			if (readMeasurements(fd, &measurements)) {
@@ -280,24 +287,24 @@ int main() {
 					measurements->relativeHumidity
 				);
 
-				fprintf(
+				printError(fprintf(
 					fp_1,
 					// "CO2: %.2f ppm",
 					"%.2f",
 					measurements->CO2
-				);
-				fprintf(
+				));
+				printError(fprintf(
 					fp_2,
 					// "Humidity: %.2frH",
 					"%.2f",
 					measurements->relativeHumidity
-				);
-				fprintf(
+				));
+				printError(fprintf(
 					fp_3,
 					// "Temp: %.2fF",
 					"%.2f",
 					convertCtoF(measurements->temperature) - 2
-				);
+				));
 				
 			}
 		}
