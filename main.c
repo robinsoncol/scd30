@@ -283,7 +283,7 @@ int main() {
 				printf(
 					"CO2: %.2fppm   Temp: %.2fF   Humidity: %.2frH\n",
 					measurements->CO2,
-					convertCtoF(measurements->temperature) - 2,
+					convertCtoF(measurements->temperature) - 5,
 					measurements->relativeHumidity
 				);
 
@@ -303,7 +303,7 @@ int main() {
 					fp_3,
 					// "Temp: %.2fF",
 					"%.2f",
-					convertCtoF(measurements->temperature) - 2
+					convertCtoF(measurements->temperature) - 5
 				));
 				
 			}
