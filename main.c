@@ -211,49 +211,49 @@ void printError(int errorNumber) {
 
 /////
 
+// ./scd30 -r 600
 
-int main() {
+int main(int argc, char *argv[]) {
 	const int fd = initSCD30();
 	if (fd < 0) {
 		printf("Can't interact with SCD30. Error: %s\n", strerror(errno));
 		return 1;
 	}
 
-	//if (!setCalibrationReference(fd, 1133)) {
-	//	printf("Failed to set calibration reference\n");
-	//}
-	//uint16_t reference = getCalibrationReference(fd);
-	//if (reference > 0) {
-	//	printf("CO2 calibration reference: %dppm\n", reference);
-	//} else {
-	//	printf("CO2 calibration reference: N/A\n");
-	//}
+	if (argc == 3) {
+		if (strcmp(argv[1], "-r") == 0) {
+			int reference = atoi(argv[2]);
+			// To get this to work, set the DANGEROUSLY_ALLOW_CHANGING_CO2_REFERENCE flag above to true. Remember to set it back to false when you're done.
+			if (reference > 0 && setCalibrationReference(fd, reference)) {
+				printf("Force recalibration completed!\n");
+				uint16_t reference = getCalibrationReference(fd);
+				if (reference > 0) {
+					printf("CO2 calibration reference: %dppm\n", reference);
+				} else {
+					printf("CO2 calibration reference: N/A\n");
+				}
+			} else {
+				printf("Force recalibration failed\n");
+			}
+		}
 
-	// while (true) {
-	// 	FILE *fp = fopen("data.txt", "a");
+		return EXIT_SUCCESS;
+	}
 
-	// 	if(fp == NULL) {
-	// 		printf("File can't be opened\n");
-	// 		exit(1);
-	// 	}
-
-	// 	if (isMeasurementDataAvailable(fd)) {
-	// 		struct Measurements *measurements = NULL;
-	// 		if (readMeasurements(fd, &measurements)) {
-	// 			// printf(                                                // output to commandline
-	// 			fprintf(
-	// 				fp,
-	// 				"CO2: %.2fppm   Temp: %.2fF   Humidity: %.2frH\n",
-	// 				measurements->CO2,
-	// 				convertCtoF(measurements->temperature) - 2,
-	// 				measurements->relativeHumidity
-	// 			);
-	// 		}
-	// 	}
-
-	// 	fclose(fp);
-
-	// CO2
+	if (argc == 2) {
+		if (strcmp(argv[1], "-h") == 0) {
+			printf("-h	help text\n");
+			printf("-r	calibrate CO2 sensor (include desired ppm at current aproximate levels)\n");
+			printf("-c	CO2 level\n");
+			printf("-m	humidity level\n");
+			printf("-t	temperature in celsius\n");
+			printf("-T	temperature in fahrenheit\n");
+			printf("-F	output to files INSTEAD of stdout\n");
+			printf("-u	truncate output\n");
+			printf("-o	continuous output (default should be a single run of the loop)\n");
+		}
+		return EXIT_SUCCESS;
+	}
 
 	while (true) {
 		FILE *fp_1 = fopen("CO2.txt", "w");
@@ -273,8 +273,6 @@ int main() {
 			printf("File can't be opened\n");
 			exit(1);
 		}
-
-		printf("%d\n", isMeasurementDataAvailable(fd));
 
 		if (isMeasurementDataAvailable(fd)) {
 			struct Measurements *measurements = NULL;
